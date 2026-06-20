@@ -39,20 +39,18 @@ export function ProcessSection() {
 
         {/* Steps */}
         <div
+          className="perspective-stage"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "1px",
-            background: "var(--color-border)",
-            borderRadius: "var(--radius-lg)",
-            overflow: "hidden",
+            gap: "1.5rem",
           }}
         >
           {processContent.steps.map((step) => (
             <div
               key={step.number}
+              className="surface-card depth-card"
               style={{
-                background: "var(--color-surface)",
                 padding: "2rem",
                 display: "flex",
                 flexDirection: "column",

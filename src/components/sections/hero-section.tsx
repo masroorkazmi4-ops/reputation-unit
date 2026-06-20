@@ -1,90 +1,100 @@
 import { heroContent } from "@/data/site-content";
 import { LinkButton } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SystemCoreVisual } from "@/components/visuals/system-core-visual";
 
 export function HeroSection() {
   return (
     <section
-      className="relative grid-bg soft-glow"
+      className="relative grid-bg soft-glow overflow-hidden"
       style={{ paddingBlock: "clamp(6rem, 14vw, 10rem)" }}
       aria-label="Hero"
     >
-      <div className="container-page flex flex-col items-center text-center">
-        {/* Eyebrow */}
-        <div className="mb-6">
-          <Badge variant="accent">{heroContent.eyebrow}</Badge>
-        </div>
+      <div className="container-page relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-8 items-center text-center lg:text-left">
+          {/* Left Column — Copy */}
+          <div className="flex flex-col items-center lg:items-start z-10">
+            {/* Eyebrow */}
+            <div className="mb-6">
+              <Badge variant="accent">{heroContent.eyebrow}</Badge>
+            </div>
 
-        {/* Headline */}
-        <h1
-          className="mb-6"
-          style={{
-            fontSize: "clamp(2.25rem, 5.5vw, 3.75rem)",
-            fontWeight: 700,
-            lineHeight: 1.08,
-            letterSpacing: "-0.035em",
-            color: "var(--color-text-primary)",
-            maxWidth: "860px",
-          }}
-        >
-          {heroContent.headline}
-        </h1>
-
-        {/* Subheadline */}
-        <p
-          className="mb-10"
-          style={{
-            fontSize: "clamp(1rem, 2vw, 1.2rem)",
-            lineHeight: 1.75,
-            color: "var(--color-text-secondary)",
-            maxWidth: "640px",
-          }}
-        >
-          {heroContent.subheadline}
-        </p>
-
-        {/* CTAs */}
-        <div className="mb-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <LinkButton href={heroContent.primaryCTA.href} variant="primary" size="lg">
-            {heroContent.primaryCTA.label}
-          </LinkButton>
-          <LinkButton href={heroContent.secondaryCTA.href} variant="secondary" size="lg">
-            {heroContent.secondaryCTA.label}
-          </LinkButton>
-        </div>
-
-        {/* Proof row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-          {heroContent.proofPoints.map((point, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-2"
+            {/* Headline */}
+            <h1
+              className="mb-6 text-balance"
               style={{
-                color: "var(--color-text-muted)",
-                fontSize: "0.8125rem",
-                fontFamily: "var(--font-mono)",
+                fontSize: "clamp(2.25rem, 5vw, 4rem)",
+                fontWeight: 700,
+                lineHeight: 1.08,
+                letterSpacing: "-0.035em",
+                color: "var(--color-text-primary)",
               }}
             >
-              {i > 0 && (
+              Websites and digital systems built beyond the template.
+            </h1>
+
+            {/* Subheadline */}
+            <p
+              className="mb-10 text-balance lg:text-pretty"
+              style={{
+                fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
+                lineHeight: 1.75,
+                color: "var(--color-text-secondary)",
+                maxWidth: "540px",
+              }}
+            >
+              {heroContent.subheadline}
+            </p>
+
+            {/* CTAs */}
+            <div className="mb-12 flex flex-col sm:flex-row items-center gap-4">
+              <LinkButton href={heroContent.primaryCTA.href} variant="primary" size="lg">
+                {heroContent.primaryCTA.label}
+              </LinkButton>
+              <LinkButton href={heroContent.secondaryCTA.href} variant="secondary" size="lg">
+                {heroContent.secondaryCTA.label}
+              </LinkButton>
+            </div>
+
+            {/* Proof row */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3">
+              {heroContent.proofPoints.map((point, i) => (
                 <span
-                  aria-hidden="true"
+                  key={i}
+                  className="flex items-center gap-2"
                   style={{
-                    display: "inline-block",
-                    width: "3px",
-                    height: "3px",
-                    borderRadius: "50%",
-                    backgroundColor: "var(--color-border-strong)",
+                    color: "var(--color-text-muted)",
+                    fontSize: "0.8125rem",
+                    fontFamily: "var(--font-mono)",
                   }}
-                />
-              )}
-              {point}
-            </span>
-          ))}
+                >
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="hidden lg:inline-block"
+                      style={{
+                        width: "3px",
+                        height: "3px",
+                        borderRadius: "50%",
+                        backgroundColor: "var(--color-border-strong)",
+                      }}
+                    />
+                  )}
+                  {point}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column — Visual */}
+          <div className="w-full flex items-center justify-center lg:justify-end z-10 perspective-stage mt-8 lg:mt-0">
+            <SystemCoreVisual />
+          </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator (hidden on mobile to save space) */}
         <div
-          className="mt-16 flex flex-col items-center gap-2"
+          className="mt-16 hidden lg:flex flex-col items-center gap-2 w-full absolute -bottom-12 left-0"
           style={{ color: "var(--color-text-muted)", fontSize: "0.75rem" }}
           aria-hidden="true"
         >

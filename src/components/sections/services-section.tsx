@@ -89,16 +89,17 @@ export function ServicesSection() {
 
         {/* Services grid */}
         <div
+          className="perspective-stage"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "1rem",
+            gap: "1.5rem",
           }}
         >
           {servicesContent.items.map((service) => (
             <article
               key={service.title}
-              className="surface-card"
+              className="surface-card depth-card"
               style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
             >
               {/* Icon */}

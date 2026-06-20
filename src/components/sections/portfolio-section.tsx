@@ -14,56 +14,56 @@ function statusLabel(status: string) {
   return "Private Preview";
 }
 
-/** Abstract visual panel — text-based, no fake screenshots */
-function ProjectVisual({ title, industry }: { title: string; industry: string }) {
+/** 
+ * Pseudo-browser visual panel — abstract wireframe approach, no fake screenshots 
+ */
+function ProjectVisual() {
   return (
     <div
-      className="grid-bg relative overflow-hidden"
+      className="browser-frame relative w-full"
       style={{
-        height: "180px",
-        borderRadius: "var(--radius-lg) var(--radius-lg) 0 0",
-        background: "var(--color-bg)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        height: "200px",
+        border: "none", /* handled by card border */
+        borderRadius: "0",
         borderBottom: "1px solid var(--color-border)",
       }}
       aria-hidden="true"
     >
-      {/* Accent glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse 70% 60% at 50% 60%, var(--color-accent-glow), transparent 80%)",
-          pointerEvents: "none",
-        }}
-      />
-      {/* Label */}
-      <div style={{ position: "relative", textAlign: "center", padding: "0 1.5rem" }}>
-        <p
+      <div className="browser-header">
+        <div className="browser-dot" />
+        <div className="browser-dot" />
+        <div className="browser-dot" />
+        <div className="ml-auto w-1/3 max-w-[120px] h-2.5 rounded bg-[var(--color-border)] opacity-50" />
+      </div>
+      
+      <div className="grid-bg relative flex-1 flex flex-col items-center justify-center p-6 text-center">
+        {/* Accent glow */}
+        <div
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.6875rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--color-text-muted)",
-            marginBottom: "6px",
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% 50%, var(--color-accent-glow), transparent 70%)",
+            pointerEvents: "none",
           }}
-        >
-          {industry}
-        </p>
-        <p
-          style={{
-            fontSize: "1.125rem",
-            fontWeight: 700,
-            color: "var(--color-text-primary)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {title}
-        </p>
+        />
+        
+        {/* Wireframe Mockup Content */}
+        <div className="relative z-10 w-full max-w-[200px] flex flex-col items-center gap-3 opacity-80">
+          <div className="w-12 h-12 rounded-lg border border-[var(--color-accent)] bg-[var(--color-bg)] flex items-center justify-center shadow-[0_0_15px_var(--color-accent-glow)]">
+            <div className="w-5 h-5 border-2 border-dashed border-[var(--color-accent)] rounded-sm opacity-50" />
+          </div>
+          
+          <div className="w-full flex flex-col items-center gap-1.5">
+            <div className="h-2 w-1/2 bg-[var(--color-text-muted)] rounded-full" />
+            <div className="h-3 w-3/4 bg-[var(--color-text-primary)] rounded-full opacity-60" />
+          </div>
+
+          <div className="w-full grid grid-cols-2 gap-2 mt-2">
+            <div className="h-10 border border-[var(--color-border)] rounded bg-[var(--color-surface)]" />
+            <div className="h-10 border border-[var(--color-border)] rounded bg-[var(--color-surface)]" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -102,43 +102,51 @@ export function PortfolioSection() {
           </p>
         </div>
 
-        {/* Project cards — CSS hover via .portfolio-card class */}
+        {/* Project cards — CSS hover depth via .perspective-stage & .depth-card class */}
         <div
+          className="perspective-stage"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "1.5rem",
+            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gap: "2rem",
           }}
         >
           {portfolioContent.projects.map((project) => (
-            <article key={project.id} className="portfolio-card">
-              <ProjectVisual title={project.title} industry={project.industry} />
+            <article 
+              key={project.id} 
+              className="portfolio-card depth-card"
+              style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}
+            >
+              <ProjectVisual />
 
               {/* Card body */}
               <div
                 style={{
-                  padding: "1.5rem",
+                  padding: "1.75rem",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "0.875rem",
+                  gap: "1rem",
                   flex: 1,
+                  background: "var(--color-surface)",
                 }}
               >
                 {/* Status + type row */}
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <Badge variant={statusBadgeVariant(project.status)}>
                     {statusLabel(project.status)}
                   </Badge>
-                  <Badge variant="outline">{project.type}</Badge>
+                  <span style={{ fontSize: "0.6875rem", fontFamily: "var(--font-mono)", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                    {project.industry}
+                  </span>
                 </div>
 
                 <h3
                   style={{
-                    fontSize: "1.0625rem",
-                    fontWeight: 600,
+                    fontSize: "1.25rem",
+                    fontWeight: 700,
                     color: "var(--color-text-primary)",
                     margin: 0,
-                    letterSpacing: "-0.01em",
+                    letterSpacing: "-0.02em",
                   }}
                 >
                   {project.title}
@@ -146,8 +154,8 @@ export function PortfolioSection() {
 
                 <p
                   style={{
-                    fontSize: "0.875rem",
-                    lineHeight: 1.65,
+                    fontSize: "0.9375rem",
+                    lineHeight: 1.6,
                     color: "var(--color-text-secondary)",
                     margin: 0,
                   }}
@@ -156,12 +164,12 @@ export function PortfolioSection() {
                 </p>
 
                 {/* Highlights */}
-                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "4px" }}>
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
                   {project.highlights.map((h) => (
                     <li
                       key={h}
                       className="flex items-start gap-2"
-                      style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)" }}
+                      style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}
                     >
                       <span aria-hidden="true" style={{ color: "var(--color-accent)", marginTop: "2px", flexShrink: 0 }}>✓</span>
                       {h}
@@ -170,7 +178,7 @@ export function PortfolioSection() {
                 </ul>
 
                 {/* Tech tags */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {project.tech.map((t) => (
                     <Badge key={t} variant="accent">{t}</Badge>
                   ))}
@@ -178,19 +186,21 @@ export function PortfolioSection() {
 
                 {/* Privacy note */}
                 {project.privacyNote && (
-                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", fontStyle: "italic", margin: 0 }}>
-                    {project.privacyNote}
-                  </p>
+                  <div style={{ padding: "0.75rem", marginTop: "0.5rem", borderRadius: "var(--radius-sm)", background: "rgba(255,255,255,0.03)", border: "1px solid var(--color-border)" }}>
+                    <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", fontStyle: "italic", margin: 0 }}>
+                      {project.privacyNote}
+                    </p>
+                  </div>
                 )}
 
                 {/* CTA */}
-                <div style={{ marginTop: "auto", paddingTop: "0.5rem" }}>
+                <div style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
                   {project.url ? (
-                    <LinkButton href={project.url} target="_blank" rel="noreferrer" variant="secondary" size="sm">
+                    <LinkButton href={project.url} target="_blank" rel="noreferrer" variant="secondary" size="sm" className="w-full justify-center">
                       View Live Site ↗
                     </LinkButton>
                   ) : (
-                    <LinkButton href="#contact" variant="secondary" size="sm">
+                    <LinkButton href="#contact" variant="secondary" size="sm" className="w-full justify-center">
                       Request Preview
                     </LinkButton>
                   )}
