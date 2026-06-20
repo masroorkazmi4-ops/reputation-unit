@@ -15,15 +15,20 @@ function statusLabel(status: string) {
 }
 
 /** 
- * Pseudo-browser visual panel — abstract wireframe approach, no fake screenshots 
+ * Specific pseudo-browser wireframes tailored to the project type 
  */
-function ProjectVisual() {
+function ProjectVisual({ title }: { title: string }) {
+  // Determine wireframe layout based on title
+  const isMK = title.includes("MK Digitizing");
+  const isFood = title.includes("Food");
+  const isLaw = title.includes("Law");
+
   return (
     <div
       className="browser-frame relative w-full"
       style={{
-        height: "200px",
-        border: "none", /* handled by card border */
+        height: "150px", // Reduced height for better card balance
+        border: "none",
         borderRadius: "0",
         borderBottom: "1px solid var(--color-border)",
       }}
@@ -33,37 +38,78 @@ function ProjectVisual() {
         <div className="browser-dot" />
         <div className="browser-dot" />
         <div className="browser-dot" />
-        <div className="ml-auto w-1/3 max-w-[120px] h-2.5 rounded bg-[var(--color-border)] opacity-50" />
+        <div className="ml-auto w-1/3 max-w-[120px] h-2 rounded bg-[var(--color-border)] opacity-50" />
       </div>
       
-      <div className="grid-bg relative flex-1 flex flex-col items-center justify-center p-6 text-center">
-        {/* Accent glow */}
+      <div className="grid-bg relative flex-1 flex items-start justify-center p-4 overflow-hidden bg-[var(--color-bg)]">
+        {/* Universal Accent glow */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background:
-              "radial-gradient(ellipse 60% 50% at 50% 50%, var(--color-accent-glow), transparent 70%)",
+            background: "radial-gradient(ellipse 80% 80% at 50% 20%, var(--color-accent-glow), transparent 70%)",
             pointerEvents: "none",
           }}
         />
-        
-        {/* Wireframe Mockup Content */}
-        <div className="relative z-10 w-full max-w-[200px] flex flex-col items-center gap-3 opacity-80">
-          <div className="w-12 h-12 rounded-lg border border-[var(--color-accent)] bg-[var(--color-bg)] flex items-center justify-center shadow-[0_0_15px_var(--color-accent-glow)]">
-            <div className="w-5 h-5 border-2 border-dashed border-[var(--color-accent)] rounded-sm opacity-50" />
-          </div>
-          
-          <div className="w-full flex flex-col items-center gap-1.5">
-            <div className="h-2 w-1/2 bg-[var(--color-text-muted)] rounded-full" />
-            <div className="h-3 w-3/4 bg-[var(--color-text-primary)] rounded-full opacity-60" />
-          </div>
 
-          <div className="w-full grid grid-cols-2 gap-2 mt-2">
-            <div className="h-10 border border-[var(--color-border)] rounded bg-[var(--color-surface)]" />
-            <div className="h-10 border border-[var(--color-border)] rounded bg-[var(--color-surface)]" />
+        {isMK && (
+          <div className="relative z-10 w-full max-w-[240px] flex flex-col gap-2.5 opacity-90">
+            {/* Hero bar */}
+            <div className="w-full h-10 rounded border border-[var(--color-border-strong)] bg-[var(--color-surface)] flex items-center justify-between px-3">
+              <div className="w-8 h-8 rounded-full border border-[var(--color-accent)] opacity-40" />
+              <div className="w-16 h-3 rounded-full bg-[var(--color-accent)] opacity-80" />
+            </div>
+            {/* Service cards */}
+            <div className="grid grid-cols-3 gap-2">
+               <div className="h-12 rounded border border-[var(--color-border)] bg-[var(--color-surface-elevated)]" />
+               <div className="h-12 rounded border border-[var(--color-border)] bg-[var(--color-surface-elevated)]" />
+               <div className="h-12 rounded border border-[var(--color-border)] bg-[var(--color-surface-elevated)]" />
+            </div>
           </div>
-        </div>
+        )}
+
+        {isFood && (
+          <div className="relative z-10 w-full max-w-[240px] flex gap-3 opacity-90 h-full">
+            {/* Sidebar menu */}
+            <div className="w-12 h-full rounded border border-[var(--color-border-strong)] bg-[var(--color-surface)] flex flex-col gap-2 p-2">
+              <div className="w-full h-2 rounded bg-[var(--color-border-strong)]" />
+              <div className="w-full h-2 rounded bg-[var(--color-border)]" />
+              <div className="w-full h-2 rounded bg-[var(--color-border)]" />
+            </div>
+            {/* Main Dashboard */}
+            <div className="flex-1 flex flex-col gap-2 h-full">
+              {/* Stats row */}
+              <div className="flex gap-2">
+                <div className="flex-1 h-6 rounded bg-[var(--color-surface-elevated)] border border-[var(--color-accent)] opacity-40" />
+                <div className="flex-1 h-6 rounded bg-[var(--color-surface-elevated)] border border-[var(--color-border)]" />
+              </div>
+              {/* Order rows */}
+              <div className="w-full flex-1 rounded border border-[var(--color-border-strong)] bg-[var(--color-surface)] flex flex-col gap-1 p-2">
+                 <div className="w-full h-2 rounded bg-[var(--color-border)]" />
+                 <div className="w-3/4 h-2 rounded bg-[var(--color-border)]" />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isLaw && (
+          <div className="relative z-10 w-full max-w-[240px] flex flex-col gap-3 opacity-90 items-center">
+            {/* Hero title block centered */}
+            <div className="w-3/4 flex flex-col items-center gap-1.5 mt-2">
+              <div className="w-full h-3 rounded-full bg-[var(--color-text-primary)] opacity-70" />
+              <div className="w-2/3 h-2 rounded-full bg-[var(--color-text-muted)]" />
+            </div>
+            {/* Practice areas (list format) */}
+            <div className="w-full flex flex-col gap-1.5 mt-2">
+              <div className="w-full h-6 rounded border border-[var(--color-border-strong)] bg-[var(--color-surface)] flex items-center px-2">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-accent)]" />
+              </div>
+              <div className="w-full h-6 rounded border border-[var(--color-border-strong)] bg-[var(--color-surface)] flex items-center px-2">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-border-strong)]" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -117,15 +163,15 @@ export function PortfolioSection() {
               className="portfolio-card depth-card"
               style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}
             >
-              <ProjectVisual />
+              <ProjectVisual title={project.title} />
 
               {/* Card body */}
               <div
                 style={{
-                  padding: "1.75rem",
+                  padding: "1.5rem",
                   display: "flex",
                   flexDirection: "column",
-                  gap: "1rem",
+                  gap: "0.875rem",
                   flex: 1,
                   background: "var(--color-surface)",
                 }}
@@ -142,7 +188,7 @@ export function PortfolioSection() {
 
                 <h3
                   style={{
-                    fontSize: "1.25rem",
+                    fontSize: "1.1875rem",
                     fontWeight: 700,
                     color: "var(--color-text-primary)",
                     margin: 0,
@@ -169,7 +215,7 @@ export function PortfolioSection() {
                     <li
                       key={h}
                       className="flex items-start gap-2"
-                      style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)" }}
+                      style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)" }}
                     >
                       <span aria-hidden="true" style={{ color: "var(--color-accent)", marginTop: "2px", flexShrink: 0 }}>✓</span>
                       {h}
@@ -178,7 +224,7 @@ export function PortfolioSection() {
                 </ul>
 
                 {/* Tech tags */}
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-1.5 mt-1">
                   {project.tech.map((t) => (
                     <Badge key={t} variant="accent">{t}</Badge>
                   ))}
@@ -186,7 +232,7 @@ export function PortfolioSection() {
 
                 {/* Privacy note */}
                 {project.privacyNote && (
-                  <div style={{ padding: "0.75rem", marginTop: "0.5rem", borderRadius: "var(--radius-sm)", background: "rgba(255,255,255,0.03)", border: "1px solid var(--color-border)" }}>
+                  <div style={{ padding: "0.625rem", marginTop: "0.25rem", borderRadius: "var(--radius-sm)", background: "rgba(255,255,255,0.03)", border: "1px solid var(--color-border)" }}>
                     <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", fontStyle: "italic", margin: 0 }}>
                       {project.privacyNote}
                     </p>
@@ -194,7 +240,7 @@ export function PortfolioSection() {
                 )}
 
                 {/* CTA */}
-                <div style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
+                <div style={{ marginTop: "auto", paddingTop: "1.25rem", borderTop: "1px solid var(--color-border)" }}>
                   {project.url ? (
                     <LinkButton href={project.url} target="_blank" rel="noreferrer" variant="secondary" size="sm" className="w-full justify-center">
                       View Live Site ↗

@@ -7,7 +7,10 @@ export function HeroSection() {
   return (
     <section
       className="relative grid-bg soft-glow overflow-hidden"
-      style={{ paddingBlock: "clamp(6rem, 14vw, 10rem)" }}
+      style={{ 
+        paddingTop: "clamp(8rem, 16vw, 12rem)", 
+        paddingBottom: "clamp(6rem, 12vw, 8rem)" 
+      }}
       aria-label="Hero"
     >
       <div className="container-page relative">
@@ -35,7 +38,7 @@ export function HeroSection() {
 
             {/* Subheadline */}
             <p
-              className="mb-10 text-balance lg:text-pretty"
+              className="mb-8 text-balance lg:text-pretty"
               style={{
                 fontSize: "clamp(1rem, 1.5vw, 1.125rem)",
                 lineHeight: 1.75,
@@ -47,7 +50,7 @@ export function HeroSection() {
             </p>
 
             {/* CTAs */}
-            <div className="mb-12 flex flex-col sm:flex-row items-center gap-4">
+            <div className="mb-8 flex flex-col sm:flex-row items-center gap-4">
               <LinkButton href={heroContent.primaryCTA.href} variant="primary" size="lg">
                 {heroContent.primaryCTA.label}
               </LinkButton>
@@ -56,14 +59,14 @@ export function HeroSection() {
               </LinkButton>
             </div>
 
-            {/* Proof row */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3">
+            {/* Proof row - closer to CTAs and slightly stronger opacity */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-3 opacity-90">
               {heroContent.proofPoints.map((point, i) => (
                 <span
                   key={i}
                   className="flex items-center gap-2"
                   style={{
-                    color: "var(--color-text-muted)",
+                    color: "var(--color-text-secondary)",
                     fontSize: "0.8125rem",
                     fontFamily: "var(--font-mono)",
                   }}
@@ -73,8 +76,8 @@ export function HeroSection() {
                       aria-hidden="true"
                       className="hidden lg:inline-block"
                       style={{
-                        width: "3px",
-                        height: "3px",
+                        width: "4px",
+                        height: "4px",
                         borderRadius: "50%",
                         backgroundColor: "var(--color-border-strong)",
                       }}
@@ -87,14 +90,14 @@ export function HeroSection() {
           </div>
 
           {/* Right Column — Visual */}
-          <div className="w-full flex items-center justify-center lg:justify-end z-10 perspective-stage mt-8 lg:mt-0">
+          <div className="w-full flex items-center justify-center lg:justify-end z-10 perspective-stage mt-6 lg:mt-0">
             <SystemCoreVisual />
           </div>
         </div>
 
-        {/* Scroll indicator (hidden on mobile to save space) */}
+        {/* Scroll indicator */}
         <div
-          className="mt-16 hidden lg:flex flex-col items-center gap-2 w-full absolute -bottom-12 left-0"
+          className="mt-16 hidden lg:flex flex-col items-center gap-2 w-full absolute -bottom-8 left-0"
           style={{ color: "var(--color-text-muted)", fontSize: "0.75rem" }}
           aria-hidden="true"
         >
