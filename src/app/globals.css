@@ -667,28 +667,9 @@ body.viewport-depth-shift main {
   border-radius: var(--radius-sm);
 }
 
-/* Target Section 3D Arrive */
-@keyframes section-gateway-arrive {
-  0% {
-    opacity: 0.65;
-    transform: perspective(1200px) translateY(40px) rotateX(5deg) scale(0.985);
-  }
-  100% {
-    opacity: 1;
-    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
-  }
-}
-
-.section-gateway-arrive {
-  animation: section-gateway-arrive 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  will-change: transform, opacity;
-  transform-origin: top center;
-}
-
 /* Safety overrides */
 @media (prefers-reduced-motion: reduce) {
-  .section-gateway-overlay,
-  .section-gateway-arrive {
+  .section-gateway-overlay {
     display: none !important;
     animation: none !important;
     opacity: 1 !important;

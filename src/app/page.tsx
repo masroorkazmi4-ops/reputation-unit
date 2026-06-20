@@ -9,6 +9,8 @@ import { WhyUsSection } from "@/components/sections/why-us-section";
 import { FAQSection } from "@/components/sections/faq-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { SectionTransition } from "@/components/layout/section-transition";
+import { MotionSection } from "@/components/layout/motion-section";
+import { FloatingSplineRobot } from "@/components/visuals/floating-spline-robot";
 
 export default function Home() {
   return (
@@ -19,16 +21,31 @@ export default function Home() {
 
       <main id="main-content">
         <HeroSection />
-        <ServicesSection />
-        <PortfolioSection />
-        <ProcessSection />
-        <CapabilitiesSection />
-        <WhyUsSection />
-        <FAQSection />
-        <ContactSection />
+        <MotionSection targetId="services">
+          <ServicesSection />
+        </MotionSection>
+        <MotionSection targetId="work">
+          <PortfolioSection />
+        </MotionSection>
+        <MotionSection targetId="process">
+          <ProcessSection />
+        </MotionSection>
+        <MotionSection targetId="capabilities">
+          <CapabilitiesSection />
+        </MotionSection>
+        <MotionSection targetId="why-us">
+          <WhyUsSection />
+        </MotionSection>
+        <MotionSection targetId="faq">
+          <FAQSection />
+        </MotionSection>
+        <MotionSection targetId="contact">
+          <ContactSection />
+        </MotionSection>
       </main>
 
       <Footer />
+      <FloatingSplineRobot />
     </div>
   );
 }
