@@ -1,0 +1,412 @@
+/* ==========================================================================
+   Reputation Unit — Global Styles
+   Tailwind CSS v4 + Custom Design Token System
+   ========================================================================== */
+
+@import "tailwindcss";
+
+/* ==========================================================================
+   1. DESIGN TOKENS — Custom Properties
+   ========================================================================== */
+
+:root {
+  /* --- Colors: Background ------------------------------------------------ */
+  --color-bg:            #08080f;   /* Page base — near-black, blue undertone  */
+  --color-bg-secondary:  #0d0d1a;   /* Alternate section backgrounds           */
+  --color-surface:       #111120;   /* Card / panel backgrounds                */
+  --color-surface-elevated: #181830; /* Elevated cards, hover states           */
+
+  /* --- Colors: Borders --------------------------------------------------- */
+  --color-border:        #1e1e3a;   /* Default subtle borders                  */
+  --color-border-strong: #2e2e55;   /* Dividers, active states                 */
+
+  /* --- Colors: Text ------------------------------------------------------ */
+  --color-text-primary:  #f0f0fa;   /* Headings and body — off-white           */
+  --color-text-secondary:#9898b8;   /* Descriptions, muted content             */
+  --color-text-muted:    #55556a;   /* Placeholders, footnotes                 */
+  --color-text-inverse:  #08080f;   /* Text on light backgrounds               */
+
+  /* --- Colors: Accent (Indigo/Violet) ------------------------------------ */
+  --color-accent:        #6366f1;   /* Primary accent — indigo-500             */
+  --color-accent-hover:  #4f46e5;   /* Hover — indigo-600                      */
+  --color-accent-subtle: #1e1e4a;   /* Accent-tinted surfaces, badge bg        */
+  --color-accent-glow:   rgba(99, 102, 241, 0.15); /* Ambient hero glow       */
+
+  /* --- Colors: Utility --------------------------------------------------- */
+  --color-success:       #22c55e;   /* Form success states                     */
+  --color-error:         #ef4444;   /* Form error states                       */
+  --color-white:         #ffffff;   /* Pure white (button fills, code bg)      */
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* --- Radius ------------------------------------------------------------ */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* --- Shadows ----------------------------------------------------------- */
+  --shadow-card:    0 1px 3px 0 rgba(0, 0, 0, 0.4),
+                    0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  --shadow-raised:  0 4px 16px 0 rgba(0, 0, 0, 0.5),
+                    0 1px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-glow:    0 0 40px 0 var(--color-accent-glow);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --duration-fast:  150ms;
+  --duration-base:  200ms;
+  --duration-slow:  350ms;
+  --duration-page:  500ms;
+
+  --ease-base:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Layout ------------------------------------------------------------ */
+  --container-max:    1200px;
+  --container-narrow: 768px;
+  --header-height:    64px;
+  --section-pad-y:    clamp(5rem, 10vw, 8rem); /* 80px → 128px fluid        */
+}
+
+/* ==========================================================================
+   2. TAILWIND v4 THEME MAPPING
+   ========================================================================== */
+
+@theme inline {
+  /* Map next/font CSS variables into Tailwind's font-* utilities */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* ==========================================================================
+   3. BASE RESETS & GLOBAL DEFAULTS
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default list styles when used in nav contexts */
+nav ul,
+nav ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive images */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==========================================================================
+   4. ACCESSIBILITY — Focus & Reduced Motion
+   ========================================================================== */
+
+/* Default focus ring — only visible on keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Strip default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Respect user's motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   5. LAYOUT UTILITIES
+   ========================================================================== */
+
+/* Full-width page wrapper — sets the dark base */
+.page-shell {
+  min-height: 100svh;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+/* Standard section wrapper — handles section-level spacing */
+.section-shell {
+  width: 100%;
+  padding-block: var(--section-pad-y);
+}
+
+/* Alternate section bg */
+.section-shell-alt {
+  width: 100%;
+  padding-block: var(--section-pad-y);
+  background-color: var(--color-bg-secondary);
+}
+
+/* Centered content container with max-width */
+.container-page {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1.5rem; /* 24px */
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 3rem; /* 48px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-page {
+    padding-inline: 4rem; /* 64px */
+  }
+}
+
+/* Narrow container for centered text content */
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* ==========================================================================
+   6. TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+/* Eyebrow label — sits above section headings */
+.eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;       /* 12px */
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* Gradient text — used sparingly on hero headline keywords */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--color-text-primary) 0%,
+    var(--color-accent) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section heading block — combines eyebrow + heading + description */
+.section-heading {
+  max-width: 40rem;
+}
+
+.section-heading--centered {
+  max-width: 40rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* ==========================================================================
+   7. SURFACE & CARD UTILITIES
+   ========================================================================== */
+
+/* Standard surface card */
+.surface-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--duration-base) var(--ease-base),
+    transform var(--duration-base) var(--ease-base),
+    box-shadow var(--duration-base) var(--ease-base);
+}
+
+.surface-card:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Subtle border only — for dividers and sections */
+.subtle-border {
+  border: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
+   8. DECORATIVE UTILITIES
+   ========================================================================== */
+
+/* Fine grid background overlay — gives technical depth */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center center;
+}
+
+/* Soft ambient glow — used behind hero sections */
+.soft-glow {
+  position: relative;
+}
+
+.soft-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% -10%,
+    var(--color-accent-glow),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.soft-glow > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   9. FOCUS RING UTILITY
+   ========================================================================== */
+
+/* Can be applied manually where :focus-visible needs override */
+.focus-ring {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   10. INTERACTIVE CSS UTILITIES (replaces inline event handlers)
+   ========================================================================== */
+
+/* Portfolio project card — hover lift + border accent */
+.portfolio-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    border-color var(--duration-base) var(--ease-base),
+    box-shadow var(--duration-base) var(--ease-base);
+}
+
+.portfolio-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Nav link — color transition on hover */
+.nav-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--duration-base) var(--ease-base);
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary);
+}
+
+/* Footer link — same as nav link */
+.footer-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  display: block;
+  padding: 2px 0;
+  transition: color var(--duration-base) var(--ease-base);
+}
+
+.footer-link:hover {
+  color: var(--color-text-primary);
+}
+
+/* Accent link (email addresses) */
+.accent-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: text-decoration var(--duration-fast) var(--ease-base);
+}
+
+.accent-link:hover {
+  text-decoration: underline;
+}
+
+/* Form input base */
+.form-input {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  color: var(--color-text-primary);
+  font-size: 0.9375rem;
+  outline: none;
+  width: 100%;
+  transition:
+    border-color var(--duration-base) var(--ease-base),
+    box-shadow var(--duration-base) var(--ease-base);
+}
+
+.form-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Select-specific */
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Textarea-specific */
+textarea.form-input {
+  resize: vertical;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
