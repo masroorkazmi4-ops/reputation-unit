@@ -513,17 +513,27 @@ textarea.form-input {
 }
 
 /* ==========================================================================
-   12. CINEMATIC SECTION TRANSITION (Phase 8B)
+   12. 3D SECTION GATEWAY (Phase 8C)
    ========================================================================== */
 
-/* Prevent scrolling while transitioning */
 body.section-transition-lock {
   overflow: hidden;
   touch-action: none;
 }
 
+/* Viewport depth shift - creates the feeling of the main page falling back */
+body.viewport-depth-shift main {
+  transform: perspective(1200px) rotateX(2deg) scale(0.985);
+  transform-origin: top center;
+  filter: brightness(0.7) blur(2px);
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1), 
+              filter 400ms ease;
+  will-change: transform, filter;
+  pointer-events: none;
+}
+
 /* The full screen overlay container */
-.section-transition-overlay {
+.section-gateway-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -531,117 +541,161 @@ body.section-transition-lock {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  perspective: 1000px;
 }
 
-/* Glass panels that sweep in */
-.transition-glass-panel {
+/* Glass panels sweeping */
+.gateway-panel {
   position: absolute;
-  /* Make them larger than the screen to cover skewed edges */
   top: -20vh;
   left: -20vw;
   right: -20vw;
   bottom: -20vh;
+  background: rgba(8, 8, 15, 0.98);
   transform-origin: left center;
-  transition: transform 400ms cubic-bezier(0.8, 0, 0.2, 1);
+  transition: transform 350ms cubic-bezier(0.8, 0, 0.2, 1);
   will-change: transform;
 }
 
-.transition-glass-panel.panel-1 {
+.gateway-panel.panel-1 {
   z-index: 1;
   background: var(--color-bg);
   transform: translateX(-100%);
 }
 
-.transition-glass-panel.panel-2 {
+.gateway-panel.panel-2 {
   z-index: 2;
-  background: rgba(13, 13, 26, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(13, 13, 26, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-right: 1px solid var(--color-accent);
-  transform: translateX(-100%) skewX(-10deg);
+  transform: translateX(-100%) skewX(-8deg) translateZ(50px);
+  transition-duration: 400ms;
+}
+
+.gateway-panel.panel-3 {
+  z-index: 3;
+  background: 
+    linear-gradient(90deg, transparent 0%, rgba(99,102,241,0.05) 50%, transparent 100%),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 4px;
+  transform: translateX(-100%) skewX(-12deg) translateZ(100px);
   transition-duration: 450ms;
 }
 
-/* Enter state - sweeping in from the left */
-.section-transition-overlay[data-state="entering"] .transition-glass-panel.panel-1 {
+/* Entering & Traveling */
+.section-gateway-overlay[data-phase="entering"] .gateway-panel.panel-1,
+.section-gateway-overlay[data-phase="traveling"] .gateway-panel.panel-1 {
   transform: translateX(0);
 }
-.section-transition-overlay[data-state="entering"] .transition-glass-panel.panel-2 {
-  transform: translateX(0) skewX(-10deg);
+.section-gateway-overlay[data-phase="entering"] .gateway-panel.panel-2,
+.section-gateway-overlay[data-phase="traveling"] .gateway-panel.panel-2 {
+  transform: translateX(0) skewX(-8deg) translateZ(50px);
+}
+.section-gateway-overlay[data-phase="entering"] .gateway-panel.panel-3,
+.section-gateway-overlay[data-phase="traveling"] .gateway-panel.panel-3 {
+  transform: translateX(0) skewX(-12deg) translateZ(100px);
 }
 
-/* Exit state - sweeping out to the right */
-.section-transition-overlay[data-state="exiting"] .transition-glass-panel.panel-1 {
+/* Exiting */
+.section-gateway-overlay[data-phase="exiting"] .gateway-panel.panel-1 {
   transform: translateX(100%);
 }
-.section-transition-overlay[data-state="exiting"] .transition-glass-panel.panel-2 {
-  transform: translateX(100%) skewX(-10deg);
+.section-gateway-overlay[data-phase="exiting"] .gateway-panel.panel-2 {
+  transform: translateX(100%) skewX(-8deg) translateZ(50px);
+}
+.section-gateway-overlay[data-phase="exiting"] .gateway-panel.panel-3 {
+  transform: translateX(100%) skewX(-12deg) translateZ(100px);
 }
 
-/* Central mark */
-.transition-center-mark {
+/* Gateway Content */
+.gateway-content-wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
+  transform: translate(-50%, -50%) translateZ(150px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   opacity: 0;
-  transition: opacity 200ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 250ms ease, transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: opacity, transform;
 }
 
-.section-transition-overlay[data-state="entering"] .transition-center-mark {
+.section-gateway-overlay[data-phase="traveling"] .gateway-content-wrapper {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  transition-delay: 150ms;
+  transform: translate(-50%, -50%) translateZ(150px) scale(1);
 }
 
-.section-transition-overlay[data-state="exiting"] .transition-center-mark {
+.section-gateway-overlay[data-phase="exiting"] .gateway-content-wrapper {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.1);
-  transition-delay: 0ms;
+  transform: translate(-50%, -50%) translateZ(150px) scale(1.05);
 }
 
-.transition-ru-chip {
-  width: 56px;
-  height: 56px;
+.gateway-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+.gateway-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 30px rgba(255,255,255,0.2);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.gateway-ru-mark {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-surface-elevated);
-  border: 2px solid var(--color-accent);
-  color: white;
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: 0.05em;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 0 40px var(--color-accent-glow), inset 0 0 20px rgba(99,102,241,0.2);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
 }
 
-/* Target Section Reveal Animation */
-@keyframes section-arrive {
+/* Target Section 3D Arrive */
+@keyframes section-gateway-arrive {
   0% {
-    opacity: 0;
-    transform: translateY(24px) scale(0.99);
+    opacity: 0.65;
+    transform: perspective(1200px) translateY(40px) rotateX(5deg) scale(0.985);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: perspective(1200px) translateY(0) rotateX(0deg) scale(1);
   }
 }
 
-.section-arrive {
-  animation: section-arrive 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+.section-gateway-arrive {
+  animation: section-gateway-arrive 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   will-change: transform, opacity;
+  transform-origin: top center;
 }
 
 /* Safety overrides */
 @media (prefers-reduced-motion: reduce) {
-  .section-transition-overlay,
-  .section-arrive {
+  .section-gateway-overlay,
+  .section-gateway-arrive {
     display: none !important;
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+  body.viewport-depth-shift main {
+    transform: none !important;
+    filter: none !important;
   }
 }
