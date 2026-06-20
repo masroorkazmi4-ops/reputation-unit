@@ -8,10 +8,12 @@ import { CapabilitiesSection } from "@/components/sections/capabilities-section"
 import { WhyUsSection } from "@/components/sections/why-us-section";
 import { FAQSection } from "@/components/sections/faq-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { SectionTransition } from "@/components/layout/section-transition";
 
 export default function Home() {
   return (
     <div className="page-shell">
+      <SectionTransition />
       <Navbar />
       <NavbarSpacer />
 

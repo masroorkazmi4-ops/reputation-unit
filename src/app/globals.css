@@ -511,3 +511,137 @@ textarea.form-input {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   12. CINEMATIC SECTION TRANSITION (Phase 8B)
+   ========================================================================== */
+
+/* Prevent scrolling while transitioning */
+body.section-transition-lock {
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* The full screen overlay container */
+.section-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Glass panels that sweep in */
+.transition-glass-panel {
+  position: absolute;
+  /* Make them larger than the screen to cover skewed edges */
+  top: -20vh;
+  left: -20vw;
+  right: -20vw;
+  bottom: -20vh;
+  transform-origin: left center;
+  transition: transform 400ms cubic-bezier(0.8, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.transition-glass-panel.panel-1 {
+  z-index: 1;
+  background: var(--color-bg);
+  transform: translateX(-100%);
+}
+
+.transition-glass-panel.panel-2 {
+  z-index: 2;
+  background: rgba(13, 13, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--color-accent);
+  transform: translateX(-100%) skewX(-10deg);
+  transition-duration: 450ms;
+}
+
+/* Enter state - sweeping in from the left */
+.section-transition-overlay[data-state="entering"] .transition-glass-panel.panel-1 {
+  transform: translateX(0);
+}
+.section-transition-overlay[data-state="entering"] .transition-glass-panel.panel-2 {
+  transform: translateX(0) skewX(-10deg);
+}
+
+/* Exit state - sweeping out to the right */
+.section-transition-overlay[data-state="exiting"] .transition-glass-panel.panel-1 {
+  transform: translateX(100%);
+}
+.section-transition-overlay[data-state="exiting"] .transition-glass-panel.panel-2 {
+  transform: translateX(100%) skewX(-10deg);
+}
+
+/* Central mark */
+.transition-center-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 200ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: opacity, transform;
+}
+
+.section-transition-overlay[data-state="entering"] .transition-center-mark {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 150ms;
+}
+
+.section-transition-overlay[data-state="exiting"] .transition-center-mark {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.1);
+  transition-delay: 0ms;
+}
+
+.transition-ru-chip {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-elevated);
+  border: 2px solid var(--color-accent);
+  color: white;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 40px var(--color-accent-glow), inset 0 0 20px rgba(99,102,241,0.2);
+}
+
+/* Target Section Reveal Animation */
+@keyframes section-arrive {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.section-arrive {
+  animation: section-arrive 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Safety overrides */
+@media (prefers-reduced-motion: reduce) {
+  .section-transition-overlay,
+  .section-arrive {
+    display: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
