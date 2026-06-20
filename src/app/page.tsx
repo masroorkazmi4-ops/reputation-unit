@@ -10,7 +10,7 @@ import { FAQSection } from "@/components/sections/faq-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { SectionTransition } from "@/components/layout/section-transition";
 import { MotionSection } from "@/components/layout/motion-section";
-import { FloatingSplineRobot } from "@/components/visuals/floating-spline-robot";
+import { CursorOrb } from "@/components/visuals/cursor-orb";
 
 export default function Home() {
   return (
@@ -45,7 +45,7 @@ export default function Home() {
       </main>
 
       <Footer />
-      <FloatingSplineRobot />
+      <CursorOrb />
     </div>
   );
 }

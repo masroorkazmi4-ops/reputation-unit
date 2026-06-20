@@ -61,36 +61,47 @@ export function SectionTransition() {
       const title = sectionTitles[targetId] || targetId.toUpperCase();
       setTargetName(title);
 
+      // Lock global state to prevent user interaction and ensure smooth transition
       document.body.classList.add("section-transition-lock");
       document.body.classList.add("viewport-depth-shift");
       
       setIsActive(true);
 
-      // Travel phase
+      // Wait for the entrance overlay animation to FULLY cover the screen (max panel duration = 450ms)
       setTimeout(() => {
-        // Scroll target into view instantly behind the overlay
+        // Temporarily disable CSS smooth scrolling
+        const originalScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        
+        // Instant programmatic scroll while hidden
         targetElement.scrollIntoView();
         window.history.pushState(null, "", href);
         
-        // Trigger MotionSection entrance replay
-        dispatchReplay();
+        // Allow the DOM a microtick to process the instant scroll
+        requestAnimationFrame(() => {
+          // Trigger the MotionSection entrance
+          dispatchReplay();
 
-        // Exit phase
-        setTimeout(() => {
-          setIsActive(false);
-          document.body.classList.remove("viewport-depth-shift");
-
-          // Cleanup
+          // Wait a tiny bit longer so the user can read the gateway title
           setTimeout(() => {
-            document.body.classList.remove("section-transition-lock");
-            isTransitioning.current = false;
+            setIsActive(false);
+            document.body.classList.remove("viewport-depth-shift");
             
-            targetElement.setAttribute("tabindex", "-1");
-            targetElement.focus({ preventScroll: true });
-            targetElement.style.outline = "none";
-          }, 450); 
-        }, 150); 
-      }, 350); 
+            // Restore original smooth scroll behavior
+            document.documentElement.style.scrollBehavior = originalScrollBehavior;
+
+            // Wait for the exit animation to finish before unlocking interactions
+            setTimeout(() => {
+              document.body.classList.remove("section-transition-lock");
+              isTransitioning.current = false;
+              
+              targetElement.setAttribute("tabindex", "-1");
+              targetElement.focus({ preventScroll: true });
+              targetElement.style.outline = "none";
+            }, 450); 
+          }, 300); 
+        });
+      }, 450); 
     };
 
     document.addEventListener("click", handleClick, true);
